@@ -16,9 +16,9 @@ k=4  # period
 delta=6.4E-6
 N_tri=[0,1,2] # the resulting order
 n=np.arange(-50,50,1)
-# u=(m+k*n)/(k*delta)
 
-a=0.99999999999 # fill factor
+
+FF=0.99999999999 # fill factor
 # phi=np.linspace(0,2,100)
 phi_r=np.linspace(0, 2,200)
 
@@ -27,15 +27,15 @@ phi_r=np.linspace(0, 2,200)
 I_tri=[[]]
 for j, N in enumerate(N_tri):
     m=N-k*n
-    
+    u=(m+k*n)/(k*delta)
     I=[]
     for i, phi in enumerate(phi_r):
-        a_sinc=np.sinc((a/k)*(N))
-        cos=np.cos(0.5*m*np.pi)*np.cos(0.5*phi*np.pi)
-        sin=np.sin(0.5*m*np.pi)*np.sin(0.5*phi*np.pi)
+        a_sinc=FF*sp.sinc((FF/k)*(m+k*n)*sp.pi)
+        cos=sp.cos(0.5*m*sp.pi)*sp.cos(0.5*phi*sp.pi)
+        sin=sp.sin(0.5*m*sp.pi)*sp.sin(0.5*phi*sp.pi)
         diff=cos-sin
         
-        G=a*a_sinc*diff*np.sinc(0.5*m)*pow(-1.0,n)
+        G=a_sinc*diff*sp.sinc(0.5*m*sp.pi)*pow(-1.0,n)
         G_sum=sum(G)
         Intensity=G_sum**2
         I.append(Intensity)
